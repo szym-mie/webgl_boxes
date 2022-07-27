@@ -1,0 +1,15 @@
+{
+    "plugins": ["plugins/markdown"],
+    "source": {
+        "include": "./src/",
+        "exclude": "./src/main.js"
+    },
+    "opts": {
+        "destination": "./docs/",
+        "recurse": true
+    },
+    "templates": {
+        "name": "Polygons",
+        "repoUrl": "https://github.com/szym-mie/polygons-webgl"
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "id": "testMin",
+    "version": 0,
+    "resources": [
+        {
+            "id": "skyTex",
+            "url": {
+                "start": "./res/sky_tex_", 
+                "end": ".png"
+            },
+            "type": "cubemap"
+        },
+        {
+            "id": "mapTexDiffImg",
+            "url": "./res/map_tex_diff.png",
+            "type": "image"
+        },
+        {
+            "id": "wallShaderVert",
+            "url": "./src/shader/wall.vert",
+            "type": "text"
+        },
+        {
+            "id": "wallShaderFrag",
+            "url": "./src/shader/wall.frag",
+            "type": "text"
+        },
+        {
+            "id": "skyShaderVert",
+            "url": "./src/shader/sky.vert",
+            "type": "text"
+        },
+        {
+            "id": "skyShaderFrag",
+            "url": "./src/shader/sky.frag",
+            "type": "text"
+        },
+        {
+            "id": "map01",
+            "url": "./src/level/map01.level.json",
+            "type": "json"
+        }
+    ]
+}
