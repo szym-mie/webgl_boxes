@@ -1,0 +1,16 @@
+# WebGL Boxes
+
+## TODOS
+
+- collisions
+- directional ligthing
+- convert skybox to a mesh convention
+- more textures
+- finalize COLLADA
+
+## FUTURE IMPROVMENTS
+
+- in game map editor
+- online WebRTC game, WebSockets might be easier for a coop mode
+
+szym.mie 2022
