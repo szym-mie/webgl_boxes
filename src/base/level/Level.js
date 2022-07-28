@@ -1,3 +1,5 @@
+import LevelMesh from "./LevelMesh";
+
 class Level {
     /**
      * 
@@ -7,11 +9,13 @@ class Level {
      * @param {Array<Array<number>>} levelDescription.spawns
      * @param {Array<Object>} levelDescription.geom
      */
-    constructor(levelDescription) {
+    constructor(program, texture, levelDescription) {
         this.id = levelDescription.id;
         this.pname = levelDescription.pname;
         this.spawns = levelDescription.spawns;
         this.geom = levelDescription.geom;
+
+        this.mesh = new LevelMesh(program, this.geom, texture);
     }
 }
 
