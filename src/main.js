@@ -99,10 +99,9 @@ function main() {
     const wallTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
     wallTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
 
-    const level = new Level(minTestRes("map01").elem);
+    const level = new Level(wallProgram, wallTexture, minTestRes("map01").elem);
     console.log(level);
-    const levelMesh = new LevelMesh(wallProgram, level.geom, wallTexture);
-    console.log(levelMesh);
+    console.log(level.mesh);
 
     // wallProgram.bindArrayBuffer('aPosition', wallBuffers['pos']);
     // wallProgram.bindArrayBuffer('aTexCoord', wallBuffers['tex']);
@@ -180,7 +179,7 @@ function main() {
 
         // gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-        levelMesh.draw(camera);
+        level.mesh.draw(camera);
 
         gl.depthFunc(gl.LEQUAL);
 
