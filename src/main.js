@@ -59,7 +59,7 @@ function main() {
         gl, 
         minTestRes('wallShaderVert').elem, 
         minTestRes('wallShaderFrag').elem, 
-        ['aPosition', 'aTexTile', 'aTexCoord'], 
+        ["aPosition", "aNormal", "aTexTile", "aTexCoord"], 
         ['uPVMatrix', 'uTexture']
     );
 
@@ -109,7 +109,7 @@ function main() {
 
     console.log(camera);
 
-    controls.position.set(0, -16, -160);
+    controls.position.set(100, -16, -160);
 
     // camera.viewMatrix.setTranslation(new Vector3().set(0, 0, -80)).rotateY(0.5);
     camera.update();

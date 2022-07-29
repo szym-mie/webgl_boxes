@@ -106,7 +106,7 @@ class Program extends GLContextObject {
             offset
         );
     }
-
+    
     /**
      * 
      * @param {Buffer} buffer 

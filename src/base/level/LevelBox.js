@@ -22,6 +22,7 @@ class LevelBox {
             .map(([xs, ys, zs]) => new Vector3([p[xs][0], p[ys][1], p[zs][2]]));
 
         this.positionData = [];
+        this.normalData = [];
         this.texCoordData = [];
         this.texTileData = [];
         this.indexData = [];
@@ -31,12 +32,14 @@ class LevelBox {
             const face = LevelBox.QUAD_FACES[i];
 
             this.positionData[i] = this.getSidePositionArrayData(face, vertices);
+            this.normalData[i] = this.getSideNormalArrayData(i);
             this.texCoordData[i] = this.getSideTexCoordArrayData(axis);
             this.texTileData[i] = this.getSideTexTileArrayData(i);
             this.indexData[i] = this.getSideIndices(i);
         }
 
         this.positionData = this.positionData.flat();
+        this.normalData = this.normalData.flat();
         this.texCoordData = this.texCoordData.flat();
         this.texTileData = this.texTileData.flat();
         this.indexData = this.indexData.flat();
@@ -52,6 +55,12 @@ class LevelBox {
         return indices
             .map(i => vertices[i])
             .map(v => [...v])
+            .flat();
+    }
+
+    getSideNormalArrayData(side) {
+        return new Array(4)
+            .fill(LevelBox.QUAD_NORMALS[side])
             .flat();
     }
 
@@ -104,6 +113,15 @@ class LevelBox {
         [1, 1],
         [0, 0],
         [1, 0],
+    ];
+
+    static QUAD_NORMALS = [
+        [0, 0, -1],
+        [1, 0, 0],
+        [0, 0, 1],
+        [-1, 0, 0],
+        [0, 1, 0],
+        [0, -1, 0]
     ];
 
     static QUAD_FACES = [

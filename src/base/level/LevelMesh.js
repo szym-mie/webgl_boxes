@@ -17,6 +17,8 @@ class LevelMesh extends Mesh {
     }
 
     createArrayBuffers() {
+        console.log("level program", this.program);
+
         const positionBufferData = new Float32Array(
             this.boxes
                 .map(b => b.positionData)
@@ -31,13 +33,29 @@ class LevelMesh extends Mesh {
             false
         );
 
+        console.log("position", positionBuffer, positionBufferData)
+
+        const normalBufferData = new Float32Array(
+            this.boxes
+                .map(b => b.normalData)
+                .flat()
+        );
+
+        const normalBuffer = new Buffer(
+            this.gl,
+            normalBufferData,
+            this.gl.ARRAY_BUFFER,
+            3,
+            false
+        );
+
+        console.log("normal", normalBuffer, normalBufferData);
+
         const texCoordBufferData = new Float32Array(
             this.boxes
                 .map(b => b.texCoordData)
                 .flat()
         );
-
-        console.log("texCoord", texCoordBufferData);
 
         const texCoordBuffer = new Buffer(
             this.gl,
@@ -47,13 +65,13 @@ class LevelMesh extends Mesh {
             false
         );
 
+        console.log("texCoord", texCoordBuffer, texCoordBufferData);
+
         const texTileBufferData = new Float32Array(
             this.boxes
                 .map(b => b.texTileData)
                 .flat()
         );
-
-        console.log("texTile", texTileBufferData);
 
         const texTileBuffer = new Buffer(
             this.gl,
@@ -62,9 +80,12 @@ class LevelMesh extends Mesh {
             2,
             false
         );
+        
+        console.log("texTile", texTileBuffer, texTileBufferData);
 
         return new Map([
             ["aPosition", positionBuffer],
+            ["aNormal", normalBuffer],
             ["aTexCoord", texCoordBuffer],
             ["aTexTile", texTileBuffer]
         ]);
