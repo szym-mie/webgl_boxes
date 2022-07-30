@@ -24,6 +24,7 @@ main()
     nmap = nmap * 2.0 - 1.0;
     nmap = normalize(vTBNMatrix * nmap);
     float sunLightIntensity = dot(sunDirection, nmap) * sunIntensity;
+    // float sunLightIntensity = 1.0;
     float lightIntensity = max(sunLightIntensity, 0.0) + ambientIntensity;
     gl_FragColor = vec4(color.rgb * lightIntensity, color.a);
 }
