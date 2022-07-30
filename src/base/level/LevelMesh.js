@@ -3,14 +3,15 @@ import LevelBox from "./LevelBox";
 import Buffer from "../../webgl/Buffer";
 
 class LevelMesh extends Mesh {
-    constructor(program, geomDescription, texture) {
+    constructor(program, geomDescription, diffTexture, normTexture) {
         super(program);
 
         this.boxes = geomDescription.map(box => 
             new LevelBox(box.bbox.start, box.bbox.end, box.tex)
         );
 
-        this.texture = texture;
+        this.diffTexture = diffTexture;
+        this.normTexture = normTexture;
 
         this.arrayBuffers = this.createArrayBuffers();
         this.elementArrayBuffer = this.createElementArrayBuffer();
@@ -44,6 +45,20 @@ class LevelMesh extends Mesh {
         const normalBuffer = new Buffer(
             this.gl,
             normalBufferData,
+            this.gl.ARRAY_BUFFER,
+            3,
+            false
+        );
+
+        const tangentBufferData = new Float32Array(
+            this.boxes
+                .map(b => b.tangentData)
+                .flat()
+        );
+
+        const tangentBuffer = new Buffer(
+            this.gl,
+            tangentBufferData,
             this.gl.ARRAY_BUFFER,
             3,
             false
@@ -86,6 +101,7 @@ class LevelMesh extends Mesh {
         return new Map([
             ["aPosition", positionBuffer],
             ["aNormal", normalBuffer],
+            ["aTangent", tangentBuffer],
             ["aTexCoord", texCoordBuffer],
             ["aTexTile", texTileBuffer]
         ]);
@@ -118,7 +134,8 @@ class LevelMesh extends Mesh {
 
         this.program.bindElementArrayBuffer(this.elementArrayBuffer);
 
-        this.program.bindTexture("uTexture", 0, this.texture);
+        this.program.bindTexture("uDiffTexture", 0, this.diffTexture);
+        this.program.bindTexture("uNormTexture", 1, this.normTexture);
 
         this.program.bindMatrix4("uPVMatrix", camera.pvMatrix);
     }

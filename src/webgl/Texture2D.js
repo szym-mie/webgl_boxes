@@ -50,8 +50,8 @@ class Texture2D extends GLContextObject {
      * @param {number} unit 
      */
     bindTextureUnit(unit) {
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.activeTexture(this.gl.TEXTURE0 + unit);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
     }
 }
 

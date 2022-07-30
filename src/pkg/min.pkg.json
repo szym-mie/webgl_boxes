@@ -16,6 +16,11 @@
             "type": "image"
         },
         {
+            "id": "mapTexNormImg",
+            "url": "./res/map_tex_norm.png",
+            "type": "image"
+        },
+        {
             "id": "wallShaderVert",
             "url": "./src/shader/wall.vert",
             "type": "text"

@@ -23,6 +23,7 @@ class LevelBox {
 
         this.positionData = [];
         this.normalData = [];
+        this.tangentData = [];
         this.texCoordData = [];
         this.texTileData = [];
         this.indexData = [];
@@ -33,6 +34,7 @@ class LevelBox {
 
             this.positionData[i] = this.getSidePositionArrayData(face, vertices);
             this.normalData[i] = this.getSideNormalArrayData(i);
+            this.tangentData[i] = this.getSideTangentArrayData(i);
             this.texCoordData[i] = this.getSideTexCoordArrayData(axis);
             this.texTileData[i] = this.getSideTexTileArrayData(i);
             this.indexData[i] = this.getSideIndices(i);
@@ -40,6 +42,7 @@ class LevelBox {
 
         this.positionData = this.positionData.flat();
         this.normalData = this.normalData.flat();
+        this.tangentData = this.tangentData.flat();
         this.texCoordData = this.texCoordData.flat();
         this.texTileData = this.texTileData.flat();
         this.indexData = this.indexData.flat();
@@ -64,6 +67,12 @@ class LevelBox {
             .flat();
     }
 
+    getSideTangentArrayData(side) {
+        return new Array(4)
+            .fill(LevelBox.QUAD_TANGENTS[side])
+            .flat();
+    }
+
     getSideTexCoordArrayData(axis) {
         const texWidth = [...this.dimensions]
             .filter((_, i) => i != axis)
@@ -80,15 +89,13 @@ class LevelBox {
     }
 
     getSideTexTileArrayData(side) {
-        console.log(this.tex
-            .map(t => [t % 8, Math.floor(t / 8)])
-            .map(tt => [tt, tt, tt, tt]))
-
         const tid = this.tex[side];
-        const tt = [tid % 8, Math.floor(tid / 8)];
+        const tt = [tid % LevelBox.tilesPerTex, Math.floor(tid / LevelBox.tilesPerTex)];
 
         return [tt, tt, tt, tt].flat();
     }
+
+    static tilesPerTex = 16;
 
     static TEX_NOMINAL_SCALE = 32;
 
@@ -122,6 +129,15 @@ class LevelBox {
         [-1, 0, 0],
         [0, 1, 0],
         [0, -1, 0]
+    ];
+
+    static QUAD_TANGENTS = [
+        [-1, 0, 0],
+        [0, 0, -1],
+        [1, 0, 0],
+        [0, 0, 1],
+        [0, 0, -1],
+        [0, 0, 1]
     ];
 
     static QUAD_FACES = [

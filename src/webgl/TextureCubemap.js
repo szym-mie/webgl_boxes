@@ -104,8 +104,8 @@ class TextureCubemap extends GLContextObject {
      * @param {number} unit 
      */
     bindTextureUnit(unit) {
-        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texture);
         this.gl.activeTexture(this.gl.TEXTURE0 + unit);
+        this.gl.bindTexture(this.gl.TEXTURE_CUBE_MAP, this.texture);
     }
 }
 

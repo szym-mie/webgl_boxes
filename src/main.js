@@ -59,8 +59,8 @@ function main() {
         gl, 
         minTestRes('wallShaderVert').elem, 
         minTestRes('wallShaderFrag').elem, 
-        ["aPosition", "aNormal", "aTexTile", "aTexCoord"], 
-        ['uPVMatrix', 'uTexture']
+        ["aPosition", "aNormal", "aTangent", "aTexTile", "aTexCoord"], 
+        ['uPVMatrix', 'uDiffTexture', 'uNormTexture']
     );
 
     const wall = {
@@ -96,10 +96,13 @@ function main() {
         'tile': new Buffer(gl, wall.tile, gl.ARRAY_BUFFER, 2, false),
     };
 
-    const wallTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
-    wallTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
+    const wallDiffTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
+    wallDiffTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
 
-    const level = new Level(wallProgram, wallTexture, minTestRes("map01").elem);
+    const wallNormTexture = new Texture2D(gl, minTestRes('mapTexNormImg').elem, gl.RGB, gl.RGB);
+    wallNormTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
+
+    const level = new Level(wallProgram, wallDiffTexture, wallNormTexture, minTestRes("map01").elem);
     console.log(level);
     console.log(level.mesh);
 
