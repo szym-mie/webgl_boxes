@@ -21,6 +21,16 @@
             "type": "image"
         },
         {
+            "id": "mapObjectShaderVert",
+            "url": "./src/shader/object.vert",
+            "type": "text"
+        },
+        {
+            "id": "mapObjectShaderFrag",
+            "url": "./src/shader/object.frag",
+            "type": "text"
+        },
+        {
             "id": "wallShaderVert",
             "url": "./src/shader/wall.vert",
             "type": "text"
@@ -44,6 +54,11 @@
             "id": "map01",
             "url": "./src/level/map01.level.json",
             "type": "json"
+        },
+        {
+            "id": "ifvModel",
+            "url": "./src/model/revf_ifv.dae",
+            "type": "collada"
         }
     ]
 }

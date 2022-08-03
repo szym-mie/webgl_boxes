@@ -17,6 +17,7 @@ import AudioBufferResourceLoader from "./loader/AudioBufferResourceLoader";
 import TextResourceLoader from "./loader/TextResourceLoader";
 import JsonResourceLoader from "./loader/JsonResourceLoader";
 import CubemapResourceLoader from "./loader/ext/CubemapResourceLoader";
+import ColladaResourceLoader from "./loader/ext/ColladaResourceLoader";
 
 import ResourceLoader from "./ResourceLoader";
 
@@ -162,6 +163,7 @@ class ResourceManager {
         json: JsonResourceLoader,
 
         cubemap: CubemapResourceLoader,
+        collada: ColladaResourceLoader
     };
 }
 

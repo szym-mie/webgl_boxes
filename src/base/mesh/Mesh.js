@@ -1,4 +1,5 @@
 import Program from "../../webgl/Program";
+import Buffer from "../../webgl/Buffer";
 import Camera from "../Camera";
 
 /**
@@ -14,7 +15,37 @@ class Mesh {
         this.program = program;
         this.gl = program.gl;
 
+        // FIXME
+        // FIXME
+        // FIXME
+        // dirty hack dont fucking do this ever again
+        this.arrayComponentMap = new Map();
+
         // define your properties here
+    }
+
+    /**
+     * 
+     * @param {Map<string, Float32Array>} arrayMap 
+     */
+    createArrayBuffers(arrayMap) {
+        const bufferMap = new Map();
+
+        for (const [name, array] of arrayMap) {
+            const components = this.arrayComponentMap.get(name);
+            console.log("attrib name", name, array, components);
+
+            const buffer = new Buffer(
+                this.gl, 
+                array, 
+                this.gl.ARRAY_BUFFER,
+                components,
+                false
+            );
+            bufferMap.set(name, buffer);
+        }
+
+        return bufferMap;
     }
 
     /**
@@ -48,6 +79,8 @@ class Mesh {
      * @param {Object} meshDescription 
      */
     fromMeshDescription(meshDescription) {}
+
+    static ARRAY_COMPONENT_MAP = new Map();
 }
 
 export default Mesh;

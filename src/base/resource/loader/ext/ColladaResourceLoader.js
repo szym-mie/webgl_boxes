@@ -15,9 +15,9 @@ class ColladaResourceLoader extends ResourceLoader {
     }
 
     getReferencedResources(resource) {
-        return resource.element
+        return resource.elem
             .getTextureUrls()
-            .map(url => new ImageResourceLoader(url));
+            .map(url => new ImageResourceLoader(this.getResourceUrlBasePath() + url));
     }
 }
 

@@ -4,8 +4,8 @@
  */
 
 /**
- * info about material (effectInfo for now)
- * @typedef {EffectInfo} MaterialInfo
+ * info about material
+ * @typedef {Map<string, EffectInfo>} MaterialInfo
  */
 
 /**

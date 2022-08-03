@@ -3,8 +3,6 @@
  * @module ColladaRawModel
  */
 
-import ResourceManager from "./res/ResourceManager";
-
 /**
  * info about material (effectInfo for now)
  * @typedef {EffectInfo} MaterialInfo
@@ -62,6 +60,7 @@ class ColladaRawModel {
         }
 
         this.meshesInfo = this.getMeshes();
+        console.log(this.meshesInfo);
     }
 
     /**
@@ -73,10 +72,16 @@ class ColladaRawModel {
     getGeometry(target) {
         const geometryNode = this.xml.querySelector(target);
 
-        const packedGeometryBuffers = {};
+        console.log(geometryNode);
+
+        const packedGeometryBuffers = new Map();
 
         const triangleInputs = [...geometryNode.querySelectorAll("mesh > triangles > input")];
-        const trianglePrimitives = geometryNode.querySelector("mesh > triangle > p");
+        console.log(triangleInputs);
+    
+        const trianglePrimitives = geometryNode.querySelector("mesh > triangles > p");
+        console.log(trianglePrimitives);
+
         const trianglePrimitivesArray = ColladaRawModel.parseIntArray(trianglePrimitives.textContent);
 
         for (const input of triangleInputs) {
@@ -101,12 +106,12 @@ class ColladaRawModel {
 
             const array = ColladaRawModel.parseFloatArray(stringArray);
 
-            packedGeometryBuffers[bufferName] = {
+            packedGeometryBuffers.set(bufferName, {
                 array: array,
                 components: components,
                 size: size,
                 packedOffset: bufferOffset,
-            };
+            });
         }
 
         return this.buildGeometry(packedGeometryBuffers, trianglePrimitivesArray);
@@ -120,6 +125,8 @@ class ColladaRawModel {
      * @returns {Map<string, GeometryInfo>} assembled geometry
      */
     buildGeometry(inputBufferMap, primitiveArray) {
+        console.log(inputBufferMap);
+    
         const bufferCount = inputBufferMap.size;
         const offsetToNameTranslation = [];
 
@@ -144,6 +151,7 @@ class ColladaRawModel {
             );
         }
 
+        console.log(primitiveArray);
         for (let i = 0; i < primitiveArray.length; i++) {
             const offset = i % bufferCount;
             const bufferName = offsetToNameTranslation[offset];
@@ -151,9 +159,10 @@ class ColladaRawModel {
             const inputBuffer = inputBufferMap.get(bufferName);
             const outputBuffer = bufferMap.get(bufferName);
 
-            const index = primitiveArray[i];
+            const comp = inputBuffer.components;
+            const index = primitiveArray[i] * comp;
 
-            outputBuffer.array.push(inputBuffer.array[index]);
+            outputBuffer.array.push(...inputBuffer.array.slice(index, index + comp));
             outputBuffer.size++;
         }
 
@@ -204,7 +213,8 @@ class ColladaRawModel {
      * @returns {string}
      */
     getImageUrl(target) {
-        return document.getElementById(target).querySelector("init_from").textContent;
+        console.log(this.xml.getElementById(target).querySelector("init_from").textContent);
+        return this.xml.getElementById(target).querySelector("init_from").textContent;
     }
 
     /**
@@ -215,7 +225,7 @@ class ColladaRawModel {
     getMeshes() {
         return new Map(
             [...this.xml.querySelectorAll("node[type='NODE']")]
-                .map(this.getNodeInfo)
+                .map(c => this.getNodeInfo(c))
                 .map(nodeInfo => [
                     nodeInfo.name, 
                     {
@@ -251,7 +261,7 @@ class ColladaRawModel {
 
         return {
             name: node.id,
-            matrix: ColladaRawModel.parseFloatArray(matrixNode.textContent),
+            // matrix: ColladaRawModel.parseFloatArray(matrixNode.textContent),
             geometryTarget: geometryNode.getAttribute("url"),
             materialTarget: materialNode.getAttribute("target"),
             childrenIds: this.getChildrenNodes(node).map(node => node.id),
@@ -264,7 +274,9 @@ class ColladaRawModel {
      */
     getTextureUrls() {
         return [...this.meshesInfo.values()]
-            .map(meshInfo => meshInfo.material.imageUrl);
+            .map(meshInfo => [...meshInfo.material.values()]
+                .map(effectInfo => effectInfo.imageUrl))
+            .flat();
     }
 
     /**
@@ -303,7 +315,7 @@ class ColladaRawModel {
     static parseFloatArray(arrayString) {
         return arrayString
             .split(' ')
-            .map(parseFloat);
+            .map(c => parseFloat(c));
     }
 
     /**
@@ -315,7 +327,7 @@ class ColladaRawModel {
      static parseIntArray(arrayString) {
         return arrayString
             .split(' ')
-            .map(parseInt);
+            .map(c => parseInt(c));
     }
 
     static domParser = new DOMParser();

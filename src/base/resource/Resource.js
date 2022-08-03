@@ -13,7 +13,7 @@ class Resource {
      * @param {string} id 
      * @returns {Resource}
      */
-    get(id) {
+    getLinked(id) {
         return this.linked.get(id);
     }
 

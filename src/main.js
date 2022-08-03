@@ -1,14 +1,12 @@
 import Program from './webgl/Program';
 import Buffer from './webgl/Buffer';
-import Matrix4 from './webgl/Matrix4';
-import Vector3 from './webgl/Vector3';
+import MapObjectMesh from './base/mapobject/MapObjectMesh';
 import Texture2D from './webgl/Texture2D';
 import TextureCubemap from './webgl/TextureCubemap';
 import Camera from "./base/Camera";
 import ResourceManager from './base/resource/ResourceManager';
 import Controls from './base/Controls';
 import Level from './base/level/Level';
-import LevelMesh from './base/level/LevelMesh';
 
 /**
  * @type {HTMLCanvasElement}
@@ -48,6 +46,26 @@ resourceManager
 function main() {
     const minTestRes = resourceManager.getPackage("testMin");
 
+    console.log(minTestRes('ifvModel'));
+
+    const mapObjectProgram = new Program(
+        gl,
+        minTestRes('mapObjectShaderVert').elem,
+        minTestRes('mapObjectShaderFrag').elem,
+        ["aPosition", "aNormal", "aTexCoord"],
+        ["uPVMatrix", "uModelMatrix", "uDiffTexture"]
+    );
+
+    const bmp2Texture = new Texture2D(gl,
+        minTestRes('ifvModel').getLinked(0).elem,
+        gl.RGB, gl.RGB
+    );
+    bmp2Texture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST)
+    const bmp2Mesh = new MapObjectMesh(
+        mapObjectProgram,
+        minTestRes('ifvModel').elem.meshesInfo,
+        bmp2Texture
+    );
 
 
     console.log(
@@ -112,7 +130,7 @@ function main() {
 
     console.log(camera);
 
-    controls.position.set(100, -16, -160);
+    controls.position.set(100, -16, -256);
 
     // camera.viewMatrix.setTranslation(new Vector3().set(0, 0, -80)).rotateY(0.5);
     camera.update();
@@ -183,6 +201,8 @@ function main() {
         // gl.drawArrays(gl.TRIANGLES, 0, 6);
 
         level.mesh.draw(camera);
+
+        bmp2Mesh.draw(camera);
 
         gl.depthFunc(gl.LEQUAL);
 

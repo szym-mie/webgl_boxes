@@ -61,6 +61,15 @@ class ResourceLoader {
         return Promise.all([...refResources.values()].map(res => res.load()))
             .then(vals => new Map(vals.map((val, idx) => [resIds[idx], val])));
     }
+
+    /**
+     * get a base path of a resource
+     * @protected
+     * @returns {string}
+     */
+    getResourceUrlBasePath() {
+        return this.url.split("/").slice(0, -1).join("/") + "/";
+    }
 }
 
 export default ResourceLoader;
