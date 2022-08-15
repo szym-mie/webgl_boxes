@@ -68,6 +68,7 @@ function main() {
     );
 
     bmp2Mesh.position[2] = 128;
+    bmp2Mesh.modelMatrix.setFromAxisAngle([0, 1, 0], 2.5);
 
     console.log(
         minTestRes("wallShaderVert").elem, 
