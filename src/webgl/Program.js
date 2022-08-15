@@ -100,7 +100,7 @@ class Program extends GLContextObject {
         this.gl.vertexAttribPointer(
             attrib,
             buffer.components,
-            buffer.dataType,
+            buffer.arrayType,
             buffer.normalize,
             stride,
             offset

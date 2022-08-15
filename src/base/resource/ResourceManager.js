@@ -18,8 +18,10 @@ import TextResourceLoader from "./loader/TextResourceLoader";
 import JsonResourceLoader from "./loader/JsonResourceLoader";
 import CubemapResourceLoader from "./loader/ext/CubemapResourceLoader";
 import ColladaResourceLoader from "./loader/ext/ColladaResourceLoader";
+import GLTFResourceLoader from "./loader/ext/GLTFResourceLoader";
 
 import ResourceLoader from "./ResourceLoader";
+import BinaryResourceLoader from "./loader/BinaryResourceLoader";
 
 class ResourceManager {
     /**
@@ -158,12 +160,14 @@ class ResourceManager {
      */
     static DefaultResourceRequestType = {
         image: ImageResourceLoader,
+        binary: BinaryResourceLoader,
         audio: AudioBufferResourceLoader,
         text: TextResourceLoader,
         json: JsonResourceLoader,
 
         cubemap: CubemapResourceLoader,
-        collada: ColladaResourceLoader
+        collada: ColladaResourceLoader,
+        gltf: GLTFResourceLoader
     };
 }
 

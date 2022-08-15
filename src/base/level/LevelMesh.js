@@ -1,155 +1,79 @@
-import Mesh from "../mesh/Mesh";
+import MeshIndexed from "../mesh/MeshIndexed";
 import LevelBox from "./LevelBox";
-import Buffer from "../../webgl/Buffer";
+import GeometryArray from "../mesh/GeometryArray";
+import Program from "../../webgl/Program";
+import Texture2D from "../../webgl/Texture2D";
 
-class LevelMesh extends Mesh {
-    constructor(program, geomDescription, diffTexture, normTexture) {
-        super(program);
-
-        this.boxes = geomDescription.map(box => 
+class LevelMesh extends MeshIndexed {
+    /**
+     * 
+     * @param {Program} program 
+     * @param {Array<Object>} levelMapInfo 
+     * @param {Texture2D} diffTexture 
+     * @param {Texture2D} normTexture 
+     */
+    constructor(program, levelMapInfo, diffTexture, normTexture) {
+        const initBoxes = levelMapInfo.map(box => 
             new LevelBox(box.bbox.start, box.bbox.end, box.tex)
         );
 
-        this.diffTexture = diffTexture;
-        this.normTexture = normTexture;
+        const arrayType = program.gl.FLOAT;
+        const indexArrayType = program.gl.UNSIGNED_SHORT;
 
-        this.arrayBuffers = this.createArrayBuffers();
-        this.elementArrayBuffer = this.createElementArrayBuffer();
-    }
-
-    createArrayBuffers() {
-        console.log("level program", this.program);
-
-        const positionBufferData = new Float32Array(
-            this.boxes
-                .map(b => b.positionData)
-                .flat()
-        );
-
-        const positionBuffer = new Buffer(
-            this.gl,
-            positionBufferData,
-            this.gl.ARRAY_BUFFER,
-            3,
-            false
-        );
-
-        console.log("position", positionBuffer, positionBufferData)
-
-        const normalBufferData = new Float32Array(
-            this.boxes
-                .map(b => b.normalData)
-                .flat()
-        );
-
-        const normalBuffer = new Buffer(
-            this.gl,
-            normalBufferData,
-            this.gl.ARRAY_BUFFER,
-            3,
-            false
-        );
-
-        const tangentBufferData = new Float32Array(
-            this.boxes
-                .map(b => b.tangentData)
-                .flat()
-        );
-
-        const tangentBuffer = new Buffer(
-            this.gl,
-            tangentBufferData,
-            this.gl.ARRAY_BUFFER,
-            3,
-            false
-        );
-
-        console.log("normal", normalBuffer, normalBufferData);
-
-        const texCoordBufferData = new Float32Array(
-            this.boxes
-                .map(b => b.texCoordData)
-                .flat()
-        );
-
-        const texCoordBuffer = new Buffer(
-            this.gl,
-            texCoordBufferData,
-            this.gl.ARRAY_BUFFER,
-            2,
-            false
-        );
-
-        console.log("texCoord", texCoordBuffer, texCoordBufferData);
-
-        const texTileBufferData = new Float32Array(
-            this.boxes
-                .map(b => b.texTileData)
-                .flat()
-        );
-
-        const texTileBuffer = new Buffer(
-            this.gl,
-            texTileBufferData,
-            this.gl.ARRAY_BUFFER,
-            2,
-            false
-        );
-        
-        console.log("texTile", texTileBuffer, texTileBufferData);
-
-        return new Map([
-            ["aPosition", positionBuffer],
-            ["aNormal", normalBuffer],
-            ["aTangent", tangentBuffer],
-            ["aTexCoord", texCoordBuffer],
-            ["aTexTile", texTileBuffer]
-        ]);
-    }
-
-    createElementArrayBuffer() {
-        const elementBufferData = new Uint16Array(
-            this.boxes
-                .map((b, i) => b.indexData.map(f => f + i * 24))
-                .flat()
-        );
-
-        return new Buffer(
-            this.gl, 
-            elementBufferData, 
-            this.gl.ELEMENT_ARRAY_BUFFER, 
-            3, 
-            false
+        super(
+            program,
+            LevelMesh.buildInitGeometry(initBoxes, arrayType),
+            LevelMesh.buildIndexGeometry(initBoxes, indexArrayType),
+            new Map([
+                ["diffuse_texture", diffTexture],
+                ["normal_texture", normTexture]
+            ])
         );
     }
 
     /**
      * 
-     * @param {Camera} camera 
+     * @param {Array<LevelBox>} boxesArray
+     * @param {GLenum} arrayType
+     * @returns {Map<string, GeometryArray>}
      */
-    bind(camera) {
-        for (const [location, buffer] of this.arrayBuffers) {
-            this.program.bindArrayBuffer(location, buffer);
-        }
+    static buildInitGeometry(boxesArray, arrayType) {
+        const getBoxesGeometryArray = (prop, components) => 
+            new GeometryArray(boxesArray.map(b => b[prop]).flat(), components, arrayType);
 
-        this.program.bindElementArrayBuffer(this.elementArrayBuffer);
-
-        this.program.bindTexture("uDiffTexture", 0, this.diffTexture);
-        this.program.bindTexture("uNormTexture", 1, this.normTexture);
-
-        this.program.bindMatrix4("uPVMatrix", camera.pvMatrix);
+        return new Map([
+            ["position", getBoxesGeometryArray("positionData", 3)],
+            ["normal", getBoxesGeometryArray("normalData", 3)],
+            ["tangent", getBoxesGeometryArray("tangentData", 3)],
+            ["texcoord_0", getBoxesGeometryArray("texCoordData", 2)],
+            ["textile_0", getBoxesGeometryArray("texTileData", 2)]
+        ]);
     }
 
-    draw(camera) {
-        const drawCount = this.getDrawCount();
-        this.program.use();
-        this.bind(camera);
-        this.gl.drawElements(this.gl.TRIANGLES, drawCount, this.gl.UNSIGNED_SHORT, 0);
+    /**
+     * 
+     * @param {Array<LevelBox>} boxesArray 
+     * @param {GLenum} arrayType
+     * @returns {GeometryArray}
+     */
+    static buildIndexGeometry(boxesArray, arrayType) {
+        const array = boxesArray
+            .map((b, i) => b.indexData.map(f => f + i * 24))
+            .flat();
+
+        return new GeometryArray(array, 3, arrayType);
     }
 
-    getDrawCount() {
-        return this.elementArrayBuffer.size;
-    }
+    /**
+     * does not need to bind anything else
+     */
+    bindOther() {}
 }
 
 export default LevelMesh;
+
+/**
+ * @author szym.mie <szym.mie@gmail.com>
+ * @copyright szym.mie 2022
+ * @license MIT
+ */

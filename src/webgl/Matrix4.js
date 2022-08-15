@@ -10,12 +10,12 @@ class Matrix4 extends Float32Array {
     /**
      * creates a new instance of matrix4
      * @constructor
-     * @param {Matrix4?} matrix matrix to copy from
+     * @param {Matrix4} [matrix] matrix to copy from
      */
-    constructor(matrix=null) {
+    constructor(matrix) {
         super(16);
 
-        if (matrix !== null) {
+        if (matrix !== undefined) {
             this.setFrom(matrix);
         } else {
             this.setIdentity();

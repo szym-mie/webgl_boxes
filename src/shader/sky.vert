@@ -1,9 +1,9 @@
-attribute vec4 aPosition;
-varying vec4 vPosition;
+attribute vec4 position;
+varying vec4 position_v;
 
 void
 main()
 {
-    vPosition = aPosition;
-    gl_Position = vec4(aPosition.xy, 1.0, aPosition.w);
+    position_v = position;
+    gl_Position = vec4(position.xy, 1.0, position.w);
 }

@@ -1,6 +1,6 @@
 import Resource from "../../Resource";
 import ResourceLoader from "../../ResourceLoader";
-import ColladaRawModel from "../../../ColladaRawModel";
+import ColladaParser from "../../../mesh/parser/ColladaParser";
 import ImageResourceLoader from "../ImageResourceLoader";
 
 class ColladaResourceLoader extends ResourceLoader {
@@ -11,7 +11,7 @@ class ColladaResourceLoader extends ResourceLoader {
     loadResource() {
         return fetch(this.url)
             .then(res => res.text())
-            .then(xml => new Resource(new ColladaRawModel(xml)));
+            .then(xml => new Resource(new ColladaParser(xml)));
     }
 
     getReferencedResources(resource) {
@@ -22,3 +22,9 @@ class ColladaResourceLoader extends ResourceLoader {
 }
 
 export default ColladaResourceLoader;
+
+/**
+ * @author szym.mie <szym.mie@gmail.com>
+ * @copyright szym.mie 2022
+ * @license MIT
+ */

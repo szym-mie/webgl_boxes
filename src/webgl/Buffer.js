@@ -15,15 +15,17 @@ class Buffer extends GLContextObject {
      * create a new GL buffer
      * @constructs
      * @param {WebGLRenderingContext} gl 
+     * @param {GLenum} bufferType a type of buffer - array or element array
      * @param {TypedArray} array 
+     * @param {GLenum} arrayType a data type
      * @param {number} components
      * @param {boolean} normalize
      */
-    constructor(gl, array, bufferType, components, normalize) {
+    constructor(gl, bufferType, array, arrayType, components, normalize) {
         super(gl);
         this.buffer = this.gl.createBuffer();
+        this.arrayType = arrayType;
         this.bufferType = bufferType;
-        this.dataType = Buffer.BufferDataTypes[array.constructor];
         this.components = components;
         this.normalize = normalize;
         this.size = 0;
@@ -41,18 +43,6 @@ class Buffer extends GLContextObject {
         this.gl.bufferData(this.bufferType, array, this.gl.STATIC_DRAW);
         this.size = array.length;
         this.vertexCount = Math.floor(this.size / this.components);
-    }
-
-    /**
-     * enum for getting GL types
-     * @readonly
-     * @enum {GLenum}
-     */
-    static BufferDataTypes = {
-        [Uint8Array]: WebGLRenderingContext.UNSIGNED_BYTE,
-        [Uint16Array]: WebGLRenderingContext.UNSIGNED_SHORT,
-        [Uint32Array]: WebGLRenderingContext.UNSIGNED_INT,
-        [Float32Array]: WebGLRenderingContext.FLOAT
     }
 }
 

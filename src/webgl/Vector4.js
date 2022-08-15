@@ -8,12 +8,12 @@ class Vector4 extends Float32Array {
     /**
      * create a new 4-component vector
      * @constructs
-     * @param {Vector4?} vector
+     * @param {Vector4} [vector]
      */
-    constructor(vector=null) {
+    constructor(vector) {
         super(4);
 
-        if (vector !== null) {
+        if (vector !== undefined) {
             this.setFrom(vector);
         }
     }

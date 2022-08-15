@@ -1,27 +1,27 @@
-attribute vec4 aPosition;
-attribute vec3 aNormal;
-attribute vec3 aTangent;
-attribute vec2 aTexTile;
-attribute vec2 aTexCoord;
+attribute vec4 position;
+attribute vec3 normal;
+attribute vec3 tangent;
+attribute vec2 texcoord_0;
+attribute vec2 textile_0;
 
-uniform mat4 uPVMatrix;
+uniform mat4 pv_matrix;
 
-varying vec3 vNormal;
-varying vec2 vTexTile;
-varying vec2 vTexCoord;
+varying vec3 normal_v;
+varying vec2 texcoord_0_v;
+varying vec2 textile_0_v;
 
-varying mat3 vTBNMatrix;
+varying mat3 tbn_matrix_v;
 
 void 
 main()
 {
-    gl_Position = uPVMatrix * aPosition;
-    vNormal = aNormal;
-    vTexTile = aTexTile;
-    vTexCoord = aTexCoord;
+    gl_Position = pv_matrix * position;
+    normal_v = normal;
+    texcoord_0_v = texcoord_0;
+    textile_0_v = textile_0;
 
-    vec3 T = normalize(aTangent);
-    vec3 N = normalize(aNormal);
-    vec3 B = cross(T, N);
-    vTBNMatrix = mat3(T, B, N);
+    vec3 t = normalize(tangent);
+    vec3 n = normalize(normal);
+    vec3 b = cross(t, n);
+    tbn_matrix_v = mat3(t, b, n);
 }

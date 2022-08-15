@@ -18,3 +18,9 @@ class JsonResourceLoader extends ResourceLoader {
 }
 
 export default JsonResourceLoader;
+
+/**
+ * @author szym.mie <szym.mie@gmail.com>
+ * @copyright szym.mie 2022
+ * @license MIT
+ */

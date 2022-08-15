@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-image": "^2.1.1",
-    "rollup": "^2.75.5"
+    "rollup": "^2.75.5",
+    "eslint": "^8.22.0"
   }
 }

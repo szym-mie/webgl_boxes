@@ -50,69 +50,37 @@ function main() {
 
     const mapObjectProgram = new Program(
         gl,
-        minTestRes('mapObjectShaderVert').elem,
-        minTestRes('mapObjectShaderFrag').elem,
-        ["aPosition", "aNormal", "aTexCoord"],
-        ["uPVMatrix", "uModelMatrix", "uDiffTexture"]
+        minTestRes("mapObjectShaderVert").elem,
+        minTestRes("mapObjectShaderFrag").elem,
+        ["position", "normal", "tangent", "texcoord_0"],
+        ["pv_matrix", "model_matrix", "diffuse_texture", "normal_texture"]
     );
 
-    const bmp2Texture = new Texture2D(gl,
-        minTestRes('ifvModel').getLinked(0).elem,
-        gl.RGB, gl.RGB
-    );
-    bmp2Texture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST)
+    // const bmp2Texture = new Texture2D(gl,
+    //     minTestRes('ifvModel').getLinked(0).elem,
+    //     gl.RGB, gl.RGB
+    // );
+    // bmp2Texture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST)
     const bmp2Mesh = new MapObjectMesh(
         mapObjectProgram,
-        minTestRes('ifvModel').elem.meshesInfo,
-        bmp2Texture
+        "body",
+        minTestRes("ifvModel")
     );
 
+    bmp2Mesh.position[2] = 128;
 
     console.log(
-        minTestRes('wallShaderVert').elem, 
-        minTestRes('wallShaderFrag').elem
+        minTestRes("wallShaderVert").elem, 
+        minTestRes("wallShaderFrag").elem
     );
 
     const wallProgram = new Program(
         gl, 
         minTestRes('wallShaderVert').elem, 
         minTestRes('wallShaderFrag').elem, 
-        ["aPosition", "aNormal", "aTangent", "aTexTile", "aTexCoord"], 
-        ['uPVMatrix', 'uDiffTexture', 'uNormTexture']
+        ["position", "normal", "tangent", "textile_0", "texcoord_0"], 
+        ['pv_matrix', 'diffuse_texture', 'normal_texture']
     );
-
-    const wall = {
-        'pos': new Float32Array([ 
-            -20, -20, 0, 
-            20, -20, 0, 
-            -20, 20, 0,
-            -20, 20, 0, 
-            20, -20, 0, 
-            20, 20, 0
-        ]),
-        'tex': new Float32Array([
-            0, 2, 
-            2, 2,
-            0, 0,
-            0, 0,
-            2, 2,
-            2, 0
-        ]),
-        'tile': new Float32Array([
-            4, 0,
-            4, 0,
-            4, 0,
-            4, 0,
-            4, 0,
-            4, 0,
-        ]),
-    };
-
-    const wallBuffers = {
-        'pos': new Buffer(gl, wall.pos, gl.ARRAY_BUFFER, 3, false),
-        'tex': new Buffer(gl, wall.tex, gl.ARRAY_BUFFER, 2, false),
-        'tile': new Buffer(gl, wall.tile, gl.ARRAY_BUFFER, 2, false),
-    };
 
     const wallDiffTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
     wallDiffTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
@@ -147,11 +115,11 @@ function main() {
         gl, 
         minTestRes('skyShaderVert').elem, 
         minTestRes('skyShaderFrag').elem,
-        ['aPosition'],
-        ['uPVMatrix', 'uSkyTexture']);
+        ['position'],
+        ['pvi_matrix', 'diffuse_texture']);
 
     const skyBuffers = {
-        'pos': new Buffer(gl, screenSpaceGeometry, gl.ARRAY_BUFFER, 2, false)
+        'position': new Buffer(gl, gl.ARRAY_BUFFER, screenSpaceGeometry, gl.FLOAT, 2, false)
     };
 
     console.log(minTestRes('skyTex').linkedElementsObject());
@@ -161,13 +129,11 @@ function main() {
 
     skyProgram.use();
 
-    skyProgram.bindArrayBuffer('aPosition', skyBuffers['pos']);
+    skyProgram.bindArrayBuffer('position', skyBuffers['position']);
 
-    skyProgram.bindTexture('uSkyTexture', 7, skyTexture);
+    skyProgram.bindTexture('diffuse_texture', 7, skyTexture);
 
-    skyProgram.bindMatrix4('uPVMatrix', camera.pvInvMatrix);
-
-    console.log(wallProgram, wallBuffers, skyProgram, skyBuffers, gl.TEXTURE0, gl.TEXTURE1, gl.TEXTURE2);
+    skyProgram.bindMatrix4('pvi_matrix', camera.pvInvMatrix);
 
     controls.enable();
 
@@ -208,11 +174,11 @@ function main() {
 
         skyProgram.use();
 
-        skyProgram.bindArrayBuffer('aPosition', skyBuffers['pos']);
+        skyProgram.bindArrayBuffer('position', skyBuffers['position']);
 
-        skyProgram.bindTexture('uSkyTexture', 0, skyTexture);
+        skyProgram.bindTexture('diffuse_texture', 0, skyTexture);
 
-        skyProgram.bindMatrix4('uPVMatrix', camera.pvInvMatrix);
+        skyProgram.bindMatrix4('pvi_matrix', camera.pvInvMatrix);
 
         gl.drawArrays(gl.TRIANGLES, 0, 6);
 

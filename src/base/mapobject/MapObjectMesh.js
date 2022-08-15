@@ -1,69 +1,47 @@
+import Program from "../../webgl/Program";
+import Resource from "../resource/Resource";
+import MeshIndexed from "../mesh/MeshIndexed";
 import Matrix4 from "../../webgl/Matrix4";
 import Vector3 from "../../webgl/Vector3";
-import Camera from "../Camera";
-import Mesh from "../mesh/Mesh";
 
-class MapObjectMesh extends Mesh {
-    constructor(program, meshDescription, diffTexture) {
+class MapObjectMesh extends MeshIndexed {
+    /**
+     * 
+     * @param {Program} program 
+     * @param {string} meshName 
+     * @param {Resource} resource 
+     */
+    constructor(program, meshName, resource) {
         super(program);
-
-        this.meshDescription = meshDescription;
-        this.diffTexture = diffTexture;
-
-        this.arrayComponentMap = new Map([
-            ["aPosition", 3],
-            ["aNormal", 3],
-            ["aTexCoord", 2]
-        ]);
-
-        this.arrayBuffers = this.createArrayBuffers(this.getArrayData());
-
-        this.position = new Vector3([-32, 0, 154]);
+        this.setFromMeshInfo(meshName, resource);
 
         this.modelMatrix = new Matrix4();
-        this.modelMatrix.setFromAxisAngle(new Vector3([1, 0, 0]), Math.PI / 2);
-
-        this.update();
+        this.position = new Vector3();
     }
 
-    getArrayData() {
-        const body = this.meshDescription.get("body");
-        const geometry = body.geometry;
-
-        const arrayData = new Map();
-
-        console.log(new Float32Array(geometry.get("NORMAL").array));
-
-        arrayData.set("aPosition", new Float32Array(geometry.get("VERTEX").array));
-        arrayData.set("aNormal", new Float32Array(geometry.get("NORMAL").array));
-        arrayData.set("aTexCoord", new Float32Array(geometry.get("TEXCOORD").array));
-
-        return arrayData;
-    }
-
+    /**
+     * update a model matrix,
+     * called implicitly by bindOther.
+     */
     update() {
         this.modelMatrix
             .setTranslation(this.position);
     }
 
     /**
-     * 
-     * @param {Camera} camera 
+     * bind other user-defined uniforms
      */
-    bind(camera) {
-        for (const [location, buffer] of this.arrayBuffers) {
-            this.program.bindArrayBuffer(location, buffer);
-        }
+    bindOther() {
+        this.update();
 
-        this.program.bindTexture("uDiffTexture", 0, this.diffTexture);
-
-        this.program.bindMatrix4("uPVMatrix", camera.pvMatrix);
-        this.program.bindMatrix4("uModelMatrix", this.modelMatrix);
-    }
-
-    getDrawCount() {
-        return 3030;
+        this.program.bindMatrix4("model_matrix", this.modelMatrix);
     }
 }
 
 export default MapObjectMesh;
+
+/**
+ * @author szym.mie <szym.mie@gmail.com>
+ * @copyright szym.mie 2022
+ * @license MIT
+ */

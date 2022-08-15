@@ -25,7 +25,7 @@
 
 /**
  * processed info about mesh
- * @typedef {Object} MeshInfo
+ * @typedef {Object} MeshNodeInfo
  * @property {Array<number>} matrix
  * @property {Map<string, GeometryInfo>} geometry
  * @property {MaterialInfo} material
@@ -43,10 +43,13 @@
  * @property {Array<number>} childrenIds
  */
 
+/**
+ * @deprecated use {@link MeshInfo}
+ */
 class MeshDescription {
     /**
-     * 
-     * @param {Array<MeshInfo>} meshInfos
+     * made for COLLADA
+     * @param {Array<MeshNodeInfo>} meshInfos
      */
     constructor(meshInfos) {
         this.meshInfos = meshInfos;

@@ -1,7 +1,7 @@
 import Resource from "../Resource";
 import ResourceLoader from "../ResourceLoader";
 
-class AudioBufferResourceLoader extends ResourceLoader {
+class BinaryResourceLoader extends ResourceLoader {
     constructor(url, spec) {
         super(url, spec);
     }
@@ -17,7 +17,7 @@ class AudioBufferResourceLoader extends ResourceLoader {
     }
 }
 
-export default AudioBufferResourceLoader;
+export default BinaryResourceLoader;
 
 /**
  * @author szym.mie <szym.mie@gmail.com>

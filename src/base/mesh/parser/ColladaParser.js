@@ -3,6 +3,10 @@
  * @module ColladaRawModel
  */
 
+// FIXME convert to a new MeshInfo convention, MeshDescription is now deprecated
+
+import GeometryArray from "../GeometryArray";
+
 /**
  * info about material (effectInfo for now)
  * @typedef {EffectInfo} MaterialInfo
@@ -43,17 +47,17 @@
  * @property {Array<number>} childrenIds
  */
 
-class ColladaRawModel {
+class ColladaParser {
     /**
      * construct a new model info
      * @constructs
-     * @param {string} model
+     * @param {string} modelData
      */
-    constructor(model) {
+    constructor(modelData) {
         /**
          * @type {XMLDocument}
          */
-        this.xml = ColladaRawModel.domParser.parseFromString(model, "text/xml");
+        this.xml = ColladaParser.domParser.parseFromString(modelData, "text/xml");
 
         if (this.xml.documentElement.nodeName !== "COLLADA") {
             throw new TypeError("Not a COLLADA model");
@@ -82,7 +86,7 @@ class ColladaRawModel {
         const trianglePrimitives = geometryNode.querySelector("mesh > triangles > p");
         console.log(trianglePrimitives);
 
-        const trianglePrimitivesArray = ColladaRawModel.parseIntArray(trianglePrimitives.textContent);
+        const trianglePrimitivesArray = ColladaParser.parseIntArray(trianglePrimitives.textContent);
 
         for (const input of triangleInputs) {
             const bufferName = input.getAttribute("semantic");
@@ -91,7 +95,7 @@ class ColladaRawModel {
             const bufferSource = this.traverseByQuery(
                 input.getAttribute("source"),
                 elem => elem.querySelector("input").getAttribute("source"),
-                ColladaRawModel.isTagName("source")
+                ColladaParser.isTagName("source")
             );
 
             const bufferAccessesor = bufferSource.querySelector("accessor");
@@ -101,10 +105,10 @@ class ColladaRawModel {
             const stringArray = this.traverseByQuery(
                 bufferAccessesor.getAttribute("source"),
                 elem => elem.getAttribute("source"),
-                ColladaRawModel.isTagName("float_array")
+                ColladaParser.isTagName("float_array")
             ).textContent;
 
-            const array = ColladaRawModel.parseFloatArray(stringArray);
+            const array = ColladaParser.parseFloatArray(stringArray);
 
             packedGeometryBuffers.set(bufferName, {
                 array: array,
@@ -122,7 +126,7 @@ class ColladaRawModel {
      * @private
      * @param {Map<string, GeometryInfo>} inputBufferMap all the raw vertices
      * @param {Array<number>} primitiveArray a array of indices
-     * @returns {Map<string, GeometryInfo>} assembled geometry
+     * @returns {Map<string, GeometryArray>} assembled geometry
      */
     buildGeometry(inputBufferMap, primitiveArray) {
         console.log(inputBufferMap);
@@ -166,7 +170,19 @@ class ColladaRawModel {
             outputBuffer.size++;
         }
 
-        return bufferMap;
+        const geometryArrayMap = new Map();
+
+        for (const [bufferName, buffer] of bufferMap) {
+            const geometryArray = new GeometryArray(
+                buffer.array, 
+                buffer.components, 
+                Float32Array
+            );
+
+            geometryArrayMap.set(bufferName, geometryArray);
+        }
+
+        return geometryArrayMap;
     }
 
     /**
@@ -333,7 +349,24 @@ class ColladaRawModel {
     static domParser = new DOMParser();
 }
 
-export default ColladaRawModel;
+export default ColladaParser;
+
+/*
+ *  Why not COLLADA
+ *
+ *  DAE is at first glance a good format - all array data is in one XML
+ *  document, meaning you only have to request textures. That makes it much
+ *  easier to later create a mesh. Also it is a XML after all, making it more
+ *  accesible, compared to other binary formats, at least in JS.
+ *  
+ *  However COLLADA lacks a lot in a COMMON profile - the 99% of usages and
+ *  somewhat the only supported profile in practice. Apart from other
+ *  limitations, one stands out - a material may only have one diffuse
+ *  texture. There cannot be any other sampler/texture. No PBR, not even
+ *  normal texture. Maybe other exporters than blender's one can do this
+ *  (probably abusing the spec), never-the-less it remains a critical
+ *  issue for most 3D applications.
+ */
 
 /**
  * @author szym.mie <szym.mie@gmail.com>

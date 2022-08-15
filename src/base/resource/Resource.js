@@ -3,13 +3,21 @@
  */
 
 class Resource {
+    /**
+     * create a new resource
+     * @constructs
+     * @param {any} element 
+     */
     constructor(element) {
         this.elem = element;
+        /**
+         * @type {Map<string, Resource>}
+         */
         this.linked = new Map();
     }
 
     /**
-     * 
+     * return a linked resource by id
      * @param {string} id 
      * @returns {Resource}
      */
