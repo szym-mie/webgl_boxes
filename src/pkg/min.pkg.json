@@ -59,6 +59,26 @@
             "id": "ifvModel",
             "url": "./src/model/revf_ifv.gltf",
             "type": "gltf"
+        },
+        {
+            "id": "handModel",
+            "url": "./src/model/hand.gltf",
+            "type": "gltf"
+        },
+        {
+            "id": "handHoldModel",
+            "url": "./src/model/hand_hold.gltf",
+            "type": "gltf"
+        },
+        {
+            "id": "armyPistolModel",
+            "url": "./src/model/army_pistol.gltf",
+            "type": "gltf"
+        },
+        {
+            "id": "revfRifleModel",
+            "url": "./src/model/revf_rifle.gltf",
+            "type": "gltf"
         }
     ]
 }

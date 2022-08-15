@@ -16,10 +16,12 @@ class Controls {
         this.pitch = 0;
 
         this.position = new Vector3();
+        this.lastViewMatrix = new Matrix4();
 
         this.mouseMoveScale = 1;
-
         this.mouseLocked = false;
+
+        this.weaponSel = 2;
 
         this.keys = new Map();
 
@@ -69,6 +71,8 @@ class Controls {
     }
 
     updateMatrix() {
+        this.lastViewMatrix.setFrom(this.camera.viewMatrix);
+
         const yawMatrix = new Matrix4().rotateY(this.yaw);
         const posMatrix = new Matrix4().setTranslation(this.position);
 
@@ -112,9 +116,24 @@ class Controls {
         }
     }
 
+    updateUsage() {
+        if (this.keys.get("Digit1")) {
+            this.weaponSel = 1;
+        }
+
+        if (this.keys.get("Digit2")) {
+            this.weaponSel = 2;
+        }
+
+        if (this.keys.get("Digit3")) {
+            this.weaponSel = 3;
+        }
+    }
+
     update() {
         this.updatePosition();
         this.updateMatrix();
+        this.updateUsage();
     }
 
     enable() {

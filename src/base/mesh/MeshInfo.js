@@ -100,7 +100,7 @@ class MeshInfo {
         const byteEnd = arrayInfo.byteOffset + arrayInfo.byteLength;
 
         const bufferSlice = dataBuffer.slice(byteStart, byteEnd);
-        console.log(new Float32Array(bufferSlice), new Uint16Array(bufferSlice));
+        // console.log(new Float32Array(bufferSlice), new Uint16Array(bufferSlice));
 
         return new GeometryArray(
             bufferSlice, 

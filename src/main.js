@@ -7,6 +7,7 @@ import Camera from "./base/Camera";
 import ResourceManager from './base/resource/ResourceManager';
 import Controls from './base/Controls';
 import Level from './base/level/Level';
+import Matrix4 from './webgl/Matrix4';
 
 /**
  * @type {HTMLCanvasElement}
@@ -69,6 +70,32 @@ function main() {
 
     bmp2Mesh.position[2] = 128;
     bmp2Mesh.modelMatrix.setFromAxisAngle([0, 1, 0], 2.5);
+    bmp2Mesh.update();
+
+    const handMesh = new MapObjectMesh(
+        mapObjectProgram,
+        "hand",
+        minTestRes("handModel")
+    );
+
+    const handHoldMesh = new MapObjectMesh(
+        mapObjectProgram,
+        "hand",
+        minTestRes("handHoldModel")
+    );
+
+    const armyPistolMesh = new MapObjectMesh(
+        mapObjectProgram,
+        "gun",
+        minTestRes("armyPistolModel")
+    );
+
+    const revfRifleMesh = new MapObjectMesh(
+        mapObjectProgram,
+        "gun",
+        minTestRes("revfRifleModel")
+    );
+    
 
     console.log(
         minTestRes("wallShaderVert").elem, 
@@ -138,9 +165,11 @@ function main() {
 
     controls.enable();
 
-    render();
+    let wpnMesh = armyPistolMesh;
 
-    function render() {
+    render(0);
+
+    function render(time) {
         gl.enable(gl.DEPTH_TEST);
         gl.enable(gl.CULL_FACE);
 
@@ -167,9 +196,38 @@ function main() {
 
         // gl.drawArrays(gl.TRIANGLES, 0, 6);
 
+        const handOffsetMatrix = new Matrix4();
+
+        const yOffset = Math.sin(time / 550) * 0.07 + 1;
+        const zOffset = Math.cos(time / 700) * 0.04 + (controls.weaponSel === 3 ? 1.5 : 2.5);
+
+        handOffsetMatrix.setTranslation([-1.2, yOffset, zOffset]);
+        handOffsetMatrix.multiply(controls.camera.viewMatrix);
+
+        switch(controls.weaponSel) {
+            case 2:
+                wpnMesh = armyPistolMesh;
+                break;
+            case 3:
+                wpnMesh = revfRifleMesh;
+                break;
+        }
+
+        wpnMesh.modelMatrix.setFrom(handOffsetMatrix);
+        wpnMesh.modelMatrix.invert();
+
+        handMesh.modelMatrix.setFrom(wpnMesh.modelMatrix);
+        handHoldMesh.modelMatrix.setFrom(wpnMesh.modelMatrix);
+
         level.mesh.draw(camera);
 
         bmp2Mesh.draw(camera);
+
+        wpnMesh.draw(camera);
+        handMesh.draw(camera);
+        if (controls.weaponSel === 3) {
+            handHoldMesh.draw(camera);
+        }
 
         gl.depthFunc(gl.LEQUAL);
 

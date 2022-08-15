@@ -32,8 +32,7 @@ class MapObjectMesh extends MeshIndexed {
      * bind other user-defined uniforms
      */
     bindOther() {
-        this.update();
-
+        // this.update();
         this.program.bindMatrix4("model_matrix", this.modelMatrix);
     }
 }

@@ -11,16 +11,50 @@
             padding: 0;
 
             overflow: hidden;
+
+            background-color: rgb(33, 30, 29);
         }
 
         canvas#c {
             width: 100vw;
             height: 100vh;
         }
+
+        #tip {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            color: antiquewhite;
+            padding: 1em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+
+            animation-name: tip_fade_out;
+            animation-duration: 5s;
+            animation-delay: 10s;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes tip_fade_out {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #tip {
+
+        }
     </style>
     <script src="bundle.js" defer></script>
 </head>
 <body>
     <canvas id="c"></canvas>
+    <pre id="tip">
+    wasd to move
+    shift to sprint
+    2 to switch to sidearm
+    3 to switch to primary
+
+    click to lock the pointer
+    </pre>
 </body>
 </html>

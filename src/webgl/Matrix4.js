@@ -165,6 +165,32 @@ class Matrix4 extends Float32Array {
     }
 
     /**
+     * simply add two matrices
+     * @param {Matrix4} matrix other matrix
+     * @return {Matrix4} this matrix
+     */
+    add(matrix) {
+        this[0] += matrix[0];
+        this[1] += matrix[1];
+        this[2] += matrix[2];
+        this[3] += matrix[3];
+        this[4] += matrix[4];
+        this[5] += matrix[5];
+        this[6] += matrix[6];
+        this[7] += matrix[7];
+        this[8] += matrix[8];
+        this[9] += matrix[9];
+        this[10] += matrix[10];
+        this[11] += matrix[11];
+        this[12] += matrix[12];
+        this[13] += matrix[13];
+        this[14] += matrix[14];
+        this[15] += matrix[15];
+
+        return this;
+    }
+
+    /**
      * scale this matrix
      * @param {number} scale scale factor
      * @returns {Matrix4} this matrix
@@ -259,6 +285,32 @@ class Matrix4 extends Float32Array {
         this[14] += vector[2] || 0;
     
         return this;
+    }
+
+    /**
+     * get a mix of two matrices
+     * @param {Matrix4} matrix0 
+     * @param {Matrix4} matrix1 
+     * @param {number} weight0 
+     * @param {number} weight1 
+     * @returns {Matrix4}
+     */
+    static getMix(matrix0, matrix1, weight0, weight1) {
+        const sMatrixA = new Matrix4(matrix0).scale(weight0);
+        const sMatrixB = new Matrix4(matrix1).scale(weight1);
+
+        return sMatrixA.add(sMatrixB);
+    }
+
+    /**
+     * get a lerp of two matrices
+     * @param {Matrix4} matrix0 
+     * @param {Matrix4} matrix1
+     * @param {number} weight 
+     * @returns {Matrix4}
+     */
+    static getLerp(matrix0, matrix1, weight) {
+        return this.getMix(matrix0, matrix1, 1 - weight, weight);
     }
 
     /**

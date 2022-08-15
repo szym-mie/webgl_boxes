@@ -21,7 +21,7 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "gun_mat",
+            "name" : "army_pistol_diff.png",
             "normalTexture" : {
                 "index" : 0
             },
@@ -29,14 +29,13 @@
                 "baseColorTexture" : {
                     "index" : 1
                 },
-                "metallicFactor" : 0,
-                "roughnessFactor" : 0.5
+                "metallicFactor" : 0
             }
         }
     ],
     "meshes" : [
         {
-            "name" : "gun_geom",
+            "name" : "Plane",
             "primitives" : [
                 {
                     "attributes" : {
@@ -64,82 +63,82 @@
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "revf_rifle_norm",
-            "uri" : "revf_rifle_norm.png"
+            "name" : "army_pistol_norm",
+            "uri" : "army_pistol_norm.png"
         },
         {
             "mimeType" : "image/png",
-            "name" : "revf_rifle_diff",
-            "uri" : "revf_rifle_diff.png"
+            "name" : "army_pistol_diff",
+            "uri" : "army_pistol_diff.png"
         }
     ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 942,
+            "count" : 386,
             "max" : [
-                0.00924856960773468,
-                0.035472337156534195,
-                0.08245402574539185
+                0.004000002518296242,
+                0.021413881331682205,
+                0.012687561102211475
             ],
             "min" : [
-                -0.005000018514692783,
-                -0.02913459949195385,
-                -0.15901869535446167
+                -0.004000001586973667,
+                -0.019465677440166473,
+                -0.0464654415845871
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 942,
+            "count" : 386,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 942,
+            "count" : 386,
             "type" : "VEC4"
         },
         {
             "bufferView" : 3,
             "componentType" : 5126,
-            "count" : 942,
+            "count" : 386,
             "type" : "VEC2"
         },
         {
             "bufferView" : 4,
             "componentType" : 5123,
-            "count" : 1014,
+            "count" : 726,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 11304,
+            "byteLength" : 4632,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 11304,
-            "byteOffset" : 11304
+            "byteLength" : 4632,
+            "byteOffset" : 4632
         },
         {
             "buffer" : 0,
-            "byteLength" : 15072,
-            "byteOffset" : 22608
+            "byteLength" : 6176,
+            "byteOffset" : 9264
         },
         {
             "buffer" : 0,
-            "byteLength" : 7536,
-            "byteOffset" : 37680
+            "byteLength" : 3088,
+            "byteOffset" : 15440
         },
         {
             "buffer" : 0,
-            "byteLength" : 2028,
-            "byteOffset" : 45216
+            "byteLength" : 1452,
+            "byteOffset" : 18528
         }
     ],
     "samplers" : [
@@ -150,8 +149,8 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 47244,
-            "uri" : "revf_rifle.bin"
+            "byteLength" : 19980,
+            "uri" : "army_pistol.bin"
         }
     ]
 }
