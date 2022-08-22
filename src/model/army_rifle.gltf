@@ -15,18 +15,13 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "hand",
-            "scale" : [
-                3.9772024154663086,
-                3.9772024154663086,
-                3.9772019386291504
-            ]
+            "name" : "gun"
         }
     ],
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "Material.001",
+            "name" : "gun_mat",
             "normalTexture" : {
                 "index" : 0
             },
@@ -34,25 +29,21 @@
                 "baseColorTexture" : {
                     "index" : 1
                 },
-                "metallicFactor" : 0,
-                "metallicRoughnessTexture" : {
-                    "index" : 2
-                }
+                "metallicFactor" : 0
             }
         }
     ],
     "meshes" : [
         {
-            "name" : "Cube.001",
+            "name" : "gun_geom",
             "primitives" : [
                 {
                     "attributes" : {
                         "POSITION" : 0,
                         "NORMAL" : 1,
-                        "TANGENT" : 2,
-                        "TEXCOORD_0" : 3
+                        "TEXCOORD_0" : 2
                     },
-                    "indices" : 4,
+                    "indices" : 3,
                     "material" : 0
                 }
             ]
@@ -66,96 +57,76 @@
         {
             "sampler" : 0,
             "source" : 1
-        },
-        {
-            "sampler" : 0,
-            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "hand_norm",
-            "uri" : "hand_norm.png"
+            "name" : "army_rifle_norm",
+            "uri" : "army_rifle_norm.png"
         },
         {
             "mimeType" : "image/png",
-            "name" : "hand_diff",
-            "uri" : "hand_diff.png"
-        },
-        {
-            "mimeType" : "image/png",
-            "name" : "hand_refl",
-            "uri" : "hand_refl.png"
+            "name" : "army_rifle_tex",
+            "uri" : "army_rifle_tex.png"
         }
     ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 537,
+            "count" : 848,
             "max" : [
-                0.016945455223321915,
-                0.0292351096868515,
-                0.08154422789812088
+                0.0065000057220458984,
+                0.042001884430646896,
+                0.0828285962343216
             ],
             "min" : [
-                -0.07285825908184052,
-                -0.04966162145137787,
-                -0.10770459473133087
+                -0.011552974581718445,
+                -0.026077521964907646,
+                -0.11467137932777405
             ],
             "type" : "VEC3"
         },
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 537,
+            "count" : 848,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 537,
-            "type" : "VEC4"
-        },
-        {
-            "bufferView" : 3,
-            "componentType" : 5126,
-            "count" : 537,
+            "count" : 848,
             "type" : "VEC2"
         },
         {
-            "bufferView" : 4,
+            "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 537,
+            "count" : 1218,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 6444,
+            "byteLength" : 10176,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 6444,
-            "byteOffset" : 6444
+            "byteLength" : 10176,
+            "byteOffset" : 10176
         },
         {
             "buffer" : 0,
-            "byteLength" : 8592,
-            "byteOffset" : 12888
+            "byteLength" : 6784,
+            "byteOffset" : 20352
         },
         {
             "buffer" : 0,
-            "byteLength" : 4296,
-            "byteOffset" : 21480
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 1074,
-            "byteOffset" : 25776
+            "byteLength" : 2436,
+            "byteOffset" : 27136
         }
     ],
     "samplers" : [
@@ -166,8 +137,8 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 26852,
-            "uri" : "hand_hold.bin"
+            "byteLength" : 29572,
+            "uri" : "army_rifle.bin"
         }
     ]
 }

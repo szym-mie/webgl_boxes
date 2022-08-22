@@ -6,6 +6,7 @@ attribute vec2 textile_0;
 
 uniform mat4 pv_matrix;
 
+varying vec4 position_v;
 varying vec3 normal_v;
 varying vec2 texcoord_0_v;
 varying vec2 textile_0_v;
@@ -16,6 +17,7 @@ void
 main()
 {
     gl_Position = pv_matrix * position;
+    position_v = position;
     normal_v = normal;
     texcoord_0_v = texcoord_0;
     textile_0_v = textile_0;

@@ -20,6 +20,7 @@ class GLTFParser {
 
         for (const node of gltf.nodes) {
             const mesh = gltf.meshes[node.mesh];
+            if (mesh === undefined) continue; // non-mesh node
             const primitives = mesh.primitives[0];
             const meshInfo = new MeshInfo(
                 this.getMaterials(gltf, primitives.material),
@@ -39,6 +40,7 @@ class GLTFParser {
 
         return new Map([
             ["diffuse_texture", this.getTexture(gltf, pbr.baseColorTexture.index)],
+            // ["roughness_texture", this.getTexture(gltf, pbr.metallicRoughnessTexture)],
             ["normal_texture", this.getTexture(gltf, material.normalTexture.index)]
         ]);
     }

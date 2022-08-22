@@ -11,8 +11,8 @@ struct dir_light_t {
     float weight;
 };
 
-const ambient_light_t ambient = ambient_light_t(vec3(1.0, 1.0, 1.0), 0.2);
-const dir_light_t sun = dir_light_t(vec3(1.0, 1.0, 1.0), vec3(0.743, -0.557, -0.371), 0.4);
+const ambient_light_t ambient = ambient_light_t(vec3(1.0, 0.45, 0.25), 0.2);
+const dir_light_t sun = dir_light_t(vec3(1.0, 0.45, 0.25), vec3(0.912, -0.228, -0.342), 0.8);
 
 varying vec3 normal_v;
 varying vec2 texcoord_0_v;

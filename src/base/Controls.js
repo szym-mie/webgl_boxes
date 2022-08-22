@@ -18,6 +18,9 @@ class Controls {
         this.position = new Vector3();
         this.lastViewMatrix = new Matrix4();
 
+        this.moveOffset = 0;
+        this.moveSpeed = 0;
+
         this.mouseMoveScale = 1;
         this.mouseLocked = false;
 
@@ -75,6 +78,7 @@ class Controls {
 
         const yawMatrix = new Matrix4().rotateY(this.yaw);
         const posMatrix = new Matrix4().setTranslation(this.position);
+        this.camera.position = this.position;
 
         this.camera.viewMatrix
             .setIdentity()
@@ -95,24 +99,33 @@ class Controls {
         let moveSpeed = 1;
 
         if (this.keys.get("ShiftLeft") || this.keys.get("ShiftRight")) {
-            moveSpeed = 2.6;
+            moveSpeed = 1.9;
         }
 
+        if (this.keys.get("KeyW") || this.keys.get("KeyS") ||
+            this.keys.get("KeyA") || this.keys.get("KeyD")
+        ) {
+            this.moveSpeed += (moveSpeed - this.moveSpeed) * 0.1;
+        } else {
+            this.moveSpeed *= 0.9;
+        }
+        this.moveOffset += this.moveSpeed;
+
         if (this.keys.get("KeyW")) {
-            this.position[0] -= Math.sin(this.yaw) * moveSpeed;
-            this.position[2] += Math.cos(this.yaw) * moveSpeed;
+            this.position[0] -= Math.sin(this.yaw) * this.moveSpeed;
+            this.position[2] += Math.cos(this.yaw) * this.moveSpeed;
         }
         if (this.keys.get("KeyS")) {
-            this.position[0] += Math.sin(this.yaw) * moveSpeed;
-            this.position[2] -= Math.cos(this.yaw) * moveSpeed;
+            this.position[0] += Math.sin(this.yaw) * this.moveSpeed;
+            this.position[2] -= Math.cos(this.yaw) * this.moveSpeed;
         }
         if (this.keys.get("KeyA")) {
-            this.position[0] += Math.cos(this.yaw) * moveSpeed;
-            this.position[2] += Math.sin(this.yaw) * moveSpeed;
+            this.position[0] += Math.cos(this.yaw) * this.moveSpeed;
+            this.position[2] += Math.sin(this.yaw) * this.moveSpeed;
         }
         if (this.keys.get("KeyD")) {
-            this.position[0] -= Math.cos(this.yaw) * moveSpeed;
-            this.position[2] -= Math.sin(this.yaw) * moveSpeed;
+            this.position[0] -= Math.cos(this.yaw) * this.moveSpeed;
+            this.position[2] -= Math.sin(this.yaw) * this.moveSpeed;
         }
     }
 

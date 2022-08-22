@@ -3,6 +3,7 @@ import LevelBox from "./LevelBox";
 import GeometryArray from "../mesh/GeometryArray";
 import Program from "../../webgl/Program";
 import Texture2D from "../../webgl/Texture2D";
+import Camera from "../Camera";
 
 class LevelMesh extends MeshIndexed {
     /**
@@ -12,7 +13,7 @@ class LevelMesh extends MeshIndexed {
      * @param {Texture2D} diffTexture 
      * @param {Texture2D} normTexture 
      */
-    constructor(program, levelMapInfo, diffTexture, normTexture) {
+    constructor(program, levelMapInfo, diffTexture, normTexture, roughTexture, reflTexture) {
         const initBoxes = levelMapInfo.map(box => 
             new LevelBox(box.bbox.start, box.bbox.end, box.tex)
         );
@@ -26,7 +27,9 @@ class LevelMesh extends MeshIndexed {
             LevelMesh.buildIndexGeometry(initBoxes, indexArrayType),
             new Map([
                 ["diffuse_texture", diffTexture],
-                ["normal_texture", normTexture]
+                ["normal_texture", normTexture],
+                ["roughness_texture", roughTexture],
+                ["reflection_texture", reflTexture]
             ])
         );
     }
@@ -66,8 +69,11 @@ class LevelMesh extends MeshIndexed {
 
     /**
      * does not need to bind anything else
+     * @param {Camera} camera
      */
-    bindOther() {}
+    bindOther(camera) {
+        this.program.bindVector3("camera_position", camera.position);
+    }
 }
 
 export default LevelMesh;

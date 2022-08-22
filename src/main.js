@@ -49,6 +49,8 @@ function main() {
 
     console.log(minTestRes('ifvModel'));
 
+    gl.cullFace(gl.BACK);
+
     const mapObjectProgram = new Program(
         gl,
         minTestRes("mapObjectShaderVert").elem,
@@ -107,7 +109,7 @@ function main() {
         minTestRes('wallShaderVert').elem, 
         minTestRes('wallShaderFrag').elem, 
         ["position", "normal", "tangent", "textile_0", "texcoord_0"], 
-        ['pv_matrix', 'diffuse_texture', 'normal_texture']
+        ["pv_matrix", "diffuse_texture", "normal_texture", "roughness_texture", "reflection_texture", "camera_position"]
     );
 
     const wallDiffTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
@@ -116,7 +118,13 @@ function main() {
     const wallNormTexture = new Texture2D(gl, minTestRes('mapTexNormImg').elem, gl.RGB, gl.RGB);
     wallNormTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
 
-    const level = new Level(wallProgram, wallDiffTexture, wallNormTexture, minTestRes("map01").elem);
+    const wallReflTexture = new Texture2D(gl, minTestRes('mapTexReflImg').elem, gl.RGB, gl.RGB);
+    wallReflTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
+
+    const skyTexture = new TextureCubemap(gl, minTestRes('skyTex').linkedElementsObject(), gl.RGB, gl.RGB);
+    skyTexture.setFilters(gl.NEAREST, gl.NEAREST);
+
+    const level = new Level(wallProgram, wallDiffTexture, wallNormTexture, wallReflTexture, skyTexture, minTestRes("map01").elem);
     console.log(level);
     console.log(level.mesh);
 
@@ -151,9 +159,6 @@ function main() {
     };
 
     console.log(minTestRes('skyTex').linkedElementsObject());
-
-    const skyTexture = new TextureCubemap(gl, minTestRes('skyTex').linkedElementsObject(), gl.RGB, gl.RGB);
-    skyTexture.setFilters(gl.NEAREST, gl.NEAREST);
 
     skyProgram.use();
 
@@ -198,10 +203,16 @@ function main() {
 
         const handOffsetMatrix = new Matrix4();
 
-        const yOffset = Math.sin(time / 550) * 0.07 + 1;
-        const zOffset = Math.cos(time / 700) * 0.04 + (controls.weaponSel === 3 ? 1.5 : 2.5);
+        const xOffset = -0.8;
+        const yOffset = Math.sin(time / 550) * 0.03 + 1;
+        const zOffset = Math.cos(time / 700) * 0.02 + (controls.weaponSel === 3 ? 1.5 : 2.5);
+        // const yOffset = 1;
+        // const zOffset = (controls.weaponSel === 3 ? 1.5 : 2.5);
 
-        handOffsetMatrix.setTranslation([-1.2, yOffset, zOffset]);
+        const xMoveOffset = Math.sin(Math.sin(controls.moveOffset / 11)) * 0.1 * controls.moveSpeed;
+        const yMoveOffset = Math.cos(Math.sin(-controls.moveOffset / 11 + 0.7)) * 0.15 * controls.moveSpeed;
+
+        handOffsetMatrix.setTranslation([xOffset + xMoveOffset, yOffset + yMoveOffset, zOffset]);
         handOffsetMatrix.multiply(controls.camera.viewMatrix);
 
         switch(controls.weaponSel) {

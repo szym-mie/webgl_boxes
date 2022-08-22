@@ -95,7 +95,7 @@ class Mesh extends GLContextObject {
         this.bindArrays();
         this.bindCamera(camera);
         this.bindTextures();
-        this.bindOther();
+        this.bindOther(camera);
     }
 
     /**

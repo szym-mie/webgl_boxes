@@ -29,7 +29,9 @@
                 "baseColorTexture" : {
                     "index" : 1
                 },
-                "metallicFactor" : 0
+                "metallicRoughnessTexture" : {
+                    "index" : 2
+                }
             }
         }
     ],
@@ -58,6 +60,10 @@
         {
             "sampler" : 0,
             "source" : 1
+        },
+        {
+            "sampler" : 0,
+            "source" : 2
         }
     ],
     "images" : [
@@ -70,6 +76,11 @@
             "mimeType" : "image/png",
             "name" : "revf_ifv_tex",
             "uri" : "revf_ifv_tex.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "revf_ifv_refl",
+            "uri" : "revf_ifv_refl.png"
         }
     ],
     "accessors" : [

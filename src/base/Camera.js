@@ -4,6 +4,7 @@
  */
 
 import Matrix4 from "../webgl/Matrix4";
+import Vector3 from "../webgl/Vector3";
 
 class Camera {
     /**
@@ -19,6 +20,8 @@ class Camera {
         this.aspect = aspect;
         this.near = near;
         this.far = far;
+
+        this.position = new Vector3();
 
         this.perspectiveMatrix = new Matrix4().setPerspective(fov, aspect, near, far);
         this.viewMatrix = new Matrix4();
