@@ -92,10 +92,40 @@ class Vector2 extends Float32Array {
     }
 
     /**
+     * get a length of this vector
+     * @returns {number} vector length
+     */
+    length() {
+        return Math.sqrt(this.lengthSquared());
+    }
+
+    /**
+     * get a squared length of this vector
+     * @returns {number} vector length
+     */
+    lengthSquared() {
+        return this[0]**2 + this[1]**2 + this[2]**2 + this[3]**2;
+    }    
+
+    /**
+     * normalize this vector
+     * @returns {Vector2} this vector
+     */
+    normalize() {
+        const length = this.length();
+
+        if (length !== 0) {
+            this.scale(1 / length);
+        }
+
+        return this;
+    }
+
+    /**
      * return a dot-product of two vectors
      * @param {Vector2} vectorA 
      * @param {Vector2} vectorB 
-     * @returns {number}
+     * @returns {number} dot product
      */
     static dot(vectorA, vectorB) {
         return (

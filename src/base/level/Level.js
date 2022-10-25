@@ -9,13 +9,13 @@ class Level {
      * @param {Array<Array<number>>} levelDescription.spawns
      * @param {Array<Object>} levelDescription.geom
      */
-    constructor(program, diffTexture, normTexture, roughTexture, reflTexture, levelDescription) {
+    constructor(program, diffTexture, normTexture, roughTexture, clrcTexture, reflCubemap, levelDescription) {
         this.id = levelDescription.id;
         this.pname = levelDescription.pname;
         this.spawns = levelDescription.spawns;
         this.geom = levelDescription.geom;
 
-        this.mesh = new LevelMesh(program, this.geom, diffTexture, normTexture, roughTexture, reflTexture);
+        this.mesh = new LevelMesh(program, this.geom, diffTexture, normTexture, roughTexture, clrcTexture, reflCubemap);
     }
 }
 

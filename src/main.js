@@ -109,7 +109,7 @@ function main() {
         minTestRes('wallShaderVert').elem, 
         minTestRes('wallShaderFrag').elem, 
         ["position", "normal", "tangent", "textile_0", "texcoord_0"], 
-        ["pv_matrix", "diffuse_texture", "normal_texture", "roughness_texture", "reflection_texture", "camera_position"]
+        ["pv_matrix", "diffuse_texture", "normal_texture", "roughness_texture", "clearcoat_texture", "reflection_texture", "camera_position"]
     );
 
     const wallDiffTexture = new Texture2D(gl, minTestRes('mapTexDiffImg').elem, gl.RGB, gl.RGB);
@@ -121,10 +121,13 @@ function main() {
     const wallReflTexture = new Texture2D(gl, minTestRes('mapTexReflImg').elem, gl.RGB, gl.RGB);
     wallReflTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
 
+    const wallClrcTexture = new Texture2D(gl, minTestRes('mapTexClrcImg').elem, gl.RGB, gl.RGB);
+    wallReflTexture.setFilters(gl.NEAREST_MIPMAP_LINEAR, gl.NEAREST);
+
     const skyTexture = new TextureCubemap(gl, minTestRes('skyTex').linkedElementsObject(), gl.RGB, gl.RGB);
     skyTexture.setFilters(gl.NEAREST, gl.NEAREST);
 
-    const level = new Level(wallProgram, wallDiffTexture, wallNormTexture, wallReflTexture, skyTexture, minTestRes("map01").elem);
+    const level = new Level(wallProgram, wallDiffTexture, wallNormTexture, wallReflTexture, wallClrcTexture, skyTexture, minTestRes("map01").elem);
     console.log(level);
     console.log(level.mesh);
 

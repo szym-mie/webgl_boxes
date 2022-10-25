@@ -4,16 +4,21 @@ import GeometryArray from "../mesh/GeometryArray";
 import Program from "../../webgl/Program";
 import Texture2D from "../../webgl/Texture2D";
 import Camera from "../Camera";
+import Vector3 from "../../webgl/Vector3";
+import TextureCubemap from "../../webgl/TextureCubemap";
 
 class LevelMesh extends MeshIndexed {
     /**
      * 
      * @param {Program} program 
      * @param {Array<Object>} levelMapInfo 
-     * @param {Texture2D} diffTexture 
-     * @param {Texture2D} normTexture 
+     * @param {Texture2D} diffTexture diffuse texture
+     * @param {Texture2D} normTexture normal texture
+     * @param {Texture2D} roughTexture roughness texture
+     * @param {Texture2D} clrcTexture clearcoat texture
+     * @param {TextureCubemap} reflCubemap reflection skybox
      */
-    constructor(program, levelMapInfo, diffTexture, normTexture, roughTexture, reflTexture) {
+    constructor(program, levelMapInfo, diffTexture, normTexture, roughTexture, clrcTexture, reflCubemap) {
         const initBoxes = levelMapInfo.map(box => 
             new LevelBox(box.bbox.start, box.bbox.end, box.tex)
         );
@@ -29,7 +34,8 @@ class LevelMesh extends MeshIndexed {
                 ["diffuse_texture", diffTexture],
                 ["normal_texture", normTexture],
                 ["roughness_texture", roughTexture],
-                ["reflection_texture", reflTexture]
+                ["clearcoat_texture", clrcTexture],
+                ["reflection_texture", reflCubemap]
             ])
         );
     }

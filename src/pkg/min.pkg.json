@@ -26,6 +26,11 @@
             "type": "image"
         },
         {
+            "id": "mapTexClrcImg",
+            "url": "./res/map_tex_clrc.png",
+            "type": "image"
+        },
+        {
             "id": "mapObjectShaderVert",
             "url": "./src/shader/object.vert",
             "type": "text"
