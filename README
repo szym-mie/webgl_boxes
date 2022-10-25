@@ -1,16 +1,14 @@
 # WebGL Boxes
 
-## TODO LIST
+## Things missing
 
-- collisions
-- directional ligthing
-- convert skybox to a mesh convention
-- more textures
-- finalize COLLADA
+- collisions (simple to implement, will be trying convex-hull in a future projects),
+- shadow mapping (if I ever attempt to implement it, it must be cascaded shadow mapping with PCF)
+- skinning (have to extend current GLTF importer to load them)
 
-## FUTURE IMPROVMENTS
+## Things to reconsider
 
-- in game map editor
-- online WebRTC game, WebSockets might be easier for a coop mode
+- shaders definition - currently there is too much redudunt information specfied - probably a unified 'shader interface' for all materials will prove more reliable
+- WebGL2 - it's widely available nowadays, itegrates alot of extensions from WebGL1 into core
 
 szym.mie 2022
