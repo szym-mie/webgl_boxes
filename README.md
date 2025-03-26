@@ -1,5 +1,8 @@
 # WebGL Boxes
 
+![screenshot1](./sshot1.png)
+![screenshot1](./sshot2.png)
+
 [Live Demo](https://webgl-boxes.netlify.app/)
 
 ## Things missing
